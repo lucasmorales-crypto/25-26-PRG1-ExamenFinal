@@ -40,14 +40,8 @@ public class MaquinaExpendedora {
             if (opt == 1) {
                 System.out.print("Introduce moneda: ");
                 double m = sc.nextDouble();
-                boolean m_valida = false;
-                for(int i = 0; i < mon_val.length; i++) {
-                    if (m == mon_val[i]) {
-                        m_valida = true;
-                        break;
-                    }
-                }
-                
+                boolean m_valida = esMonedaValida(m, mon_val);
+            
                 if (m_valida) {
                     if (saldo + m > max_saldo_maq) {
                         System.out.println("ERROR: La maquina no acepta mas de " + max_saldo_maq + " euros. Se devuelve " + m + " euros.");
@@ -58,34 +52,42 @@ public class MaquinaExpendedora {
                 } else {
                     System.out.println("Moneda no valida. Se devuelve " + m + " euros.");
                 }
-            } else if (opt == 2) {
-                System.out.print("Introduce el numero del producto: ");
-                int sel = sc.nextInt() - 1; // Ajustar a indice 0
-                
-                if (sel >= 0 && sel < prods.length) {
-                    if (stock[sel] <= 0) {
-                        System.out.println("Lo sentimos, producto agotado.");
-                    } else if (saldo < precios[sel]) {
-                        System.out.println("Saldo insuficiente. Necesitas " + precios[sel] + "eur.");
-                    } else {
-                        saldo = saldo - precios[sel];
-                        stock[sel] = stock[sel] - 1;
-                        System.out.println("¡Gracias! Aqui tienes tu " + prods[sel] + ".");
-                    }
-                } else {
-                    System.out.println("Seleccion invalida.");
+            }
+            
                 }
+            }if (opt == 2) {
+                saldo = procesarCompra(sc, saldo, stock, precios);
             } else if (opt == 3) {
                 if (saldo > 0) {
-                    System.out.println("No olvides recoger tu cambio: " + ((int) saldo * 100) / 100 + " euros.");
+                    System.out.printf("No olvides recoger tu cambio: %.2f€.%n", saldo);
                 }
                 System.out.println("Gracias por tu visita. ¡Hasta pronto!");
+                sc.close(); // Cerrar Scanner al salir
                 break;
             } else {
                 System.out.println("Opcion no valida.");
             }
-        }
-        sc.close();
+            
+            // Método para procesar la compra
+            public static double procesarCompra(Scanner sc, double saldo, int[] stock, double[] precios) {
+                System.out.print("Introduce el numero del producto: ");
+                int sel = sc.nextInt() - 1;
+            
+                if (sel < 0 || sel >= stock.length) {
+                    System.out.println("Seleccion invalida.");
+                } else if (stock[sel] <= 0) {
+                    System.out.println("Lo sentimos, producto agotado.");
+                } else if (saldo < precios[sel]) {
+                    System.out.printf("Saldo insuficiente. Necesitas %.2f€.%n", precios[sel]);
+                } else {
+                    saldo -= precios[sel];
+                    stock[sel]--;
+                    System.out.printf("¡Gracias! Producto %d entregado.%n", sel + 1);
+                }
+            
+                return saldo;
+            }
+            
     }
 }
 
