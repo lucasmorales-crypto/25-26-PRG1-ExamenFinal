@@ -5,12 +5,11 @@ public class MaquinaExpendedora {
         Scanner sc = new Scanner(System.in);
         
         // Productos
-        String[] prods = {"Coca-Cola", "Chips", "Chocolate", "Agua"};
-        double[] precios = {1.50, 1.00, 1.25, 0.75};
-        int[] stock = {10, 8, 12, 15};
+        double saldo = 0.0, max_saldo = 5.0;
+        String[] prods = {"Coca-Cola","Chips","Chocolate","Agua"};
+        double[] precios = {1.50,1.00,1.25,0.75};
+        int[] stock = {10,8,12,15};
         
-        double saldo = 0.0;
-        double max_saldo_maq = 5.0; // Saldo max
         
         // Monedas
         double[] mon_val = {0.10, 0.20, 0.50, 1.0, 2.0};
@@ -26,10 +25,10 @@ public class MaquinaExpendedora {
             
             System.out.println(); // Separador
             
-            System.out.println("Saldo actual: " + ((int) saldo * 100) / 100 + " euros (Max. " + max_saldo_maq + "eur)");
+            System.out.printf("Saldo actual: %.2f€ (Max. %.2f€)%n", saldo, max_saldo_maq);
             System.out.print("[1] Insertar moneda (Validas: ");
-            for(int i = 0; i < mon_val.length; i++) {
-                System.out.print(mon_val[i] + " ");
+            for (double m : mon_val) System.out.print(m + " ");
+            System.out.println(")");
             }
             System.out.println(")");
             System.out.println("[2] Seleccionar producto");
